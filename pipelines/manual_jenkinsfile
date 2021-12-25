@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+  stages {
+    // 先部署到预发布环境（我们公司没有，只有开发环境）
+    stage('Deploy - Staging') {
+      steps {
+        sh './deploy staging'
+        sh './run-somke-tests'
+      }
+    }
+
+    stage('Sanity check') {
+      steps {
+        input "Does the staging environment look ok？"
+      }
+    }
+
+    // 先部署到生产环境
+    stage('Deploy - Production') {
+      steps {
+        sh './deploy production'
+      }
+    }
+  }
+}

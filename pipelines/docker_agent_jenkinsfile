@@ -1,0 +1,21 @@
+pipeline {
+  agent { 
+    // 备注：这里是一个插件的应用场景！！！
+    // 注意，以docker容器为构建环境时，仓库的代码还是会存在jenkins宿主机的/var/jenkins_home/workspace
+    // 之前猜想是一次性放在容器内部，容器运行完就没，但是看来启动容器是会挂载workspace目录进去的
+    docker {
+      image 'node:13-alpine'
+    }
+  }
+  stages {
+    stage('build') {
+      // 这里有问题，出错
+      // def resultDist = sh returnStdout: true, script: './gradlew build'
+      // println resultDist
+
+      steps {
+        sh 'npm --version'
+      }
+    }
+  }
+}

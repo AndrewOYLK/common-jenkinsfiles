@@ -1,0 +1,33 @@
+pipeline {
+  agent any // 所有的Pipeline都需要 agent 指令
+  stages {
+    stage('build') {
+      steps {
+        sh 'echo "Hello World"'
+
+        sh '''
+          echo "xx"
+          ls -lah
+        ''' 
+      }
+    }
+    stage('test') {
+      steps {
+        retry(3) {
+          sh './test.sh'
+        }
+
+        timeout(time: 3, unit: 'MINUTES') {
+          sh './health-check.sh'
+        }
+
+        // 内嵌类型的步骤
+        timeout(time: 3, uint: 'MINUTES') {
+          retry(3) {
+            sh './test.sh'
+          }
+        }
+      }
+    }
+  }
+}
