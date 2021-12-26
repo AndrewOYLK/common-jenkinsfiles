@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    options {
+        timeout(time: 1, unit: 'HOURS') 
+    }
+    stages {
+        stage('Example1') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+
+        stage('Example2') {
+            options {
+                timeout(time: 1, unit: 'HOURS') 
+            }
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}

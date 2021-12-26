@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3-alpine'
+                    args '-v /root/.m2:/root/.m2'
+                }
+            }
+            steps {
+                sh 'pwd' // 输出：/var/jenkins_home/workspace/maven_pipeline@2
+            }
+        }
+        stage('Check') {
+            agent {
+                docker {
+                    image 'node:13'
+                }
+            }
+            steps {
+                sh 'pwd' // 输出：/var/jenkins_home/workspace/maven_pipeline@2
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh 'pwd' // 输出：/var/jenkins_home/workspace/maven_pipeline
+            }
+        }
+    }
+}
